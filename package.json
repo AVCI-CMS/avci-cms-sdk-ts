@@ -5,16 +5,21 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "generate:types": "npm --prefix ../AVCI-CMS-Backend run export:swagger && openapi-typescript ../AVCI-CMS-Backend/openapi.json -o src/schema.d.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/node": "^25.9.1",
+    "openapi-typescript": "^7.13.0",
     "tsup": "^8.5.1",
-    "typescript": "^6.0.3"
+    "typescript": "^5.9.3"
   },
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
