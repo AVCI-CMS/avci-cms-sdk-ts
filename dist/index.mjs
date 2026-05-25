@@ -1,0 +1,2 @@
+var i=class{config;baseUrl;constructor(t){this.config=t,this.baseUrl=t.baseUrl||"https://api.avcicms.com/v1"}content(t){return{findMany:async r=>(console.log(`Fetching ${t} with options:`,r),[])}}};export{i as AvciCMS};
+//# sourceMappingURL=index.mjs.map
