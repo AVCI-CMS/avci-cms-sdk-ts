@@ -3,7 +3,8 @@ import type { paths } from '../schema';
 
 export interface AvciCMSConfig {
   apiKey: string;
-  projectId: string;
+  projectId?: string;
+  clientId?: string;
   baseUrl?: string;
 }
 
@@ -13,14 +14,17 @@ export function createFetchClient(config: AvciCMSConfig) {
   const client = createClient<paths>({ baseUrl });
 
   const authMiddleware: Middleware = {
-    async onRequest({ request }) {
+    async onRequest({ request }: { request: Request }) {
       request.headers.set('Authorization', `Bearer ${config.apiKey}`);
-      if (config.projectId) {
-        request.headers.set('x-project-id', config.projectId);
+      request.headers.set('x-avci-api-key', config.apiKey);
+      const clientIdentifier = config.clientId || config.projectId;
+      if (clientIdentifier) {
+        request.headers.set('x-avci-client', clientIdentifier);
+        request.headers.set('x-project-id', clientIdentifier);
       }
       return request;
     },
-    async onResponse({ response }) {
+    async onResponse({ response }: { response: Response }) {
       // openapi-fetch natively returns { data, error }.
       // Here we can intercept and log or transform specific HTTP errors if needed.
       return response;
