@@ -2,9 +2,15 @@ import { createFetchClient, type AvciCMSConfig, type AvciFetchClient } from './c
 import { ContentModule } from './modules/content';
 import { WorkspaceModule } from './modules/workspace';
 import { ShipmentModule } from './modules/shipment';
+import { AttributeModule } from './modules/attribute';
+import { CustomFormModule } from './modules/customForm';
 
 export type { AvciCMSConfig };
 export * from './modules/shipment';
+export * from './modules/attribute';
+export * from './modules/customForm';
+export * from './types/attribute';
+export * from './types/customForm';
 
 export class AvciCMS {
   private readonly client: AvciFetchClient;
@@ -12,6 +18,8 @@ export class AvciCMS {
   public readonly content: ContentModule;
   public readonly workspace: WorkspaceModule;
   public readonly shipment: ShipmentModule;
+  public readonly attribute: AttributeModule;
+  public readonly customForm: CustomFormModule;
 
   constructor(config: AvciCMSConfig) {
     this.client = createFetchClient(config);
@@ -20,5 +28,7 @@ export class AvciCMS {
     this.content = new ContentModule(this.client);
     this.workspace = new WorkspaceModule(this.client);
     this.shipment = new ShipmentModule(this.client);
+    this.attribute = new AttributeModule(this.client);
+    this.customForm = new CustomFormModule(this.client);
   }
 }
