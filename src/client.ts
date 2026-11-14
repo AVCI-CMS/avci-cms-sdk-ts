@@ -4,13 +4,19 @@ import { WorkspaceModule } from './modules/workspace';
 import { ShipmentModule } from './modules/shipment';
 import { AttributeModule } from './modules/attribute';
 import { CustomFormModule } from './modules/customForm';
+import { BasketModule } from './modules/basket';
+import { OrderModule } from './modules/order';
 
 export type { AvciCMSConfig };
 export * from './modules/shipment';
 export * from './modules/attribute';
 export * from './modules/customForm';
+export * from './modules/basket';
+export * from './modules/order';
 export * from './types/attribute';
 export * from './types/customForm';
+export * from './types/basket';
+export * from './types/order';
 
 export class AvciCMS {
   private readonly client: AvciFetchClient;
@@ -20,6 +26,8 @@ export class AvciCMS {
   public readonly shipment: ShipmentModule;
   public readonly attribute: AttributeModule;
   public readonly customForm: CustomFormModule;
+  public readonly basket: BasketModule;
+  public readonly order: OrderModule;
 
   constructor(config: AvciCMSConfig) {
     this.client = createFetchClient(config);
@@ -30,5 +38,7 @@ export class AvciCMS {
     this.shipment = new ShipmentModule(this.client);
     this.attribute = new AttributeModule(this.client);
     this.customForm = new CustomFormModule(this.client);
+    this.basket = new BasketModule(this.client);
+    this.order = new OrderModule(this.client);
   }
 }
