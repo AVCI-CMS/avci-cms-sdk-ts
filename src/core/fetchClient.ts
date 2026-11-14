@@ -37,3 +37,4 @@ export function createFetchClient(config: AvciCMSConfig) {
 }
 
 export type AvciFetchClient = ReturnType<typeof createFetchClient>;
+export type FetchClient = AvciFetchClient;
