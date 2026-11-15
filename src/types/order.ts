@@ -155,7 +155,7 @@ export interface InstallmentOptionDto {
 }
 
 export interface SavedCardDto {
-  _id: string;
+  _id?: string;
   cardUserKey: string;
   cardToken: string;
   cardAlias: string;
@@ -164,6 +164,7 @@ export interface SavedCardDto {
   cardAssociation: string;
   cardFamily: string;
   cardBankName?: string;
+  isPrimary?: boolean;
 }
 
 export interface SaveCardPayload {
@@ -172,5 +173,24 @@ export interface SaveCardPayload {
   cardNumber: string;
   expireMonth: string;
   expireYear: string;
+  isPrimary?: boolean;
+}
+
+export interface CancelOrderPayload {
+  reason?: string;
+  reasonCode?: string;
+  autoRefund?: boolean;
+  restoreStock?: boolean;
+}
+
+export interface CancelOrderResponse {
+  status: 'success' | 'error';
+  message: string;
+  data: {
+    orderId?: string;
+    subOrderId?: string;
+    status?: OrderStatus;
+    refundResult?: unknown;
+  };
 }
 

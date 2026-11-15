@@ -7,6 +7,8 @@ import type {
   InstallmentOptionDto,
   SavedCardDto,
   SaveCardPayload,
+  CancelOrderPayload,
+  CancelOrderResponse,
 } from '../types/order';
 
 export class OrderModule {
@@ -56,6 +58,22 @@ export class OrderModule {
   ): Promise<{ data: OrderDto | null; error: unknown }> {
     if (typeof (this.client as any).GET === 'function') {
       return (this.client as any).GET(`/v1/order/${orderId}`);
+    }
+    return { data: null, error: null };
+  }
+
+  /**
+   * Cancel an order before it is shipped
+   * Calls POST /v1/order/:orderId/cancel
+   */
+  async cancelOrder(
+    orderId: string,
+    payload?: CancelOrderPayload
+  ): Promise<{ data: CancelOrderResponse | null; error: unknown }> {
+    if (typeof (this.client as any).POST === 'function') {
+      return (this.client as any).POST(`/v1/order/${orderId}/cancel`, {
+        body: payload || {},
+      });
     }
     return { data: null, error: null };
   }
@@ -114,6 +132,19 @@ export class OrderModule {
     return { data: null, error: null };
   }
 
+  /**
+   * Set a stored payment card as primary / default
+   * Calls PUT /v1/order/saved-cards/:id/primary
+   */
+  async setPrimarySavedCard(
+    id: string
+  ): Promise<{ data: SavedCardDto[] | null; error: unknown }> {
+    if (typeof (this.client as any).PUT === 'function') {
+      return (this.client as any).PUT(`/v1/order/saved-cards/${id}/primary`);
+    }
+    return { data: null, error: null };
+  }
+
   // ==========================================
   // Vendor / Merchant Operations (Isolated)
   // ==========================================
@@ -142,6 +173,22 @@ export class OrderModule {
   ): Promise<{ data: SubOrderDto | null; error: unknown }> {
     if (typeof (this.client as any).GET === 'function') {
       return (this.client as any).GET(`/v1/order/vendor/${orderId}`);
+    }
+    return { data: null, error: null };
+  }
+
+  /**
+   * Cancel an assigned sub-order (for authorized vendor)
+   * Calls POST /v1/order/management/sub-order/:subOrderId/cancel
+   */
+  async cancelSubOrder(
+    subOrderId: string,
+    payload?: CancelOrderPayload
+  ): Promise<{ data: CancelOrderResponse | null; error: unknown }> {
+    if (typeof (this.client as any).POST === 'function') {
+      return (this.client as any).POST(`/v1/order/management/sub-order/${subOrderId}/cancel`, {
+        body: payload || {},
+      });
     }
     return { data: null, error: null };
   }
