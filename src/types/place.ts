@@ -1,3 +1,13 @@
+export type PlaceOwnerType = 'WORKSPACE' | 'MERCHANT' | 'BRAND' | 'ORGANIZATION';
+
+export interface PlaceRentalDto {
+  renterType: PlaceOwnerType;
+  renterEntity: string;
+  startDate: string;
+  endDate: string;
+  terms?: string;
+}
+
 export interface PlaceAddressDto {
   title?: string;
   country?: string;
@@ -55,6 +65,15 @@ export interface PlaceProfileDto {
   color?: string;
   status?: string;
   attributes?: Record<string, unknown>[];
+  ownerType?: PlaceOwnerType;
+  ownerEntity?: string | { _id: string; name: string };
+  ownerEntityModel?: 'Merchant' | 'Brand' | 'Organization' | 'Workspace';
+  isPublicPool?: boolean;
+  inheritToAffiliates?: boolean;
+  authorizedMerchants?: string[];
+  rentals?: PlaceRentalDto[];
+  accessType?: 'OWNED' | 'ORGANIZATION_AFFILIATE' | 'RENTAL' | 'AUTHORIZED' | 'PUBLIC_POOL';
+  isOwned?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -70,6 +89,11 @@ export interface PlaceShortDto {
   address?: PlaceAddressDto;
   pricing?: PlacePricingDto;
   color?: string;
+  ownerType?: PlaceOwnerType;
+  ownerEntity?: string | { _id: string; name: string };
+  isPublicPool?: boolean;
+  accessType?: 'OWNED' | 'ORGANIZATION_AFFILIATE' | 'RENTAL' | 'AUTHORIZED' | 'PUBLIC_POOL';
+  isOwned?: boolean;
 }
 
 export interface PlaceListQuery {
