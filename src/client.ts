@@ -38,6 +38,7 @@ export * from './types/organization';
 export * from './types/static';
 export * from './types/team';
 export * from './types/place';
+export * from './cache';
 
 export class AvciCMS {
   private readonly client: AvciFetchClient;
