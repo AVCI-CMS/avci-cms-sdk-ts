@@ -1,4 +1,4 @@
-import { createFetchClient, type AvciCMSConfig, type AvciFetchClient } from './core/fetchClient';
+import { createFetchClient, CONTENT_LANGUAGE_HEADER, type AvciCMSConfig, type AvciFetchClient } from './core/fetchClient';
 import { ContentModule } from './modules/content';
 import { WorkspaceModule } from './modules/workspace';
 import { ShipmentModule } from './modules/shipment';
@@ -14,6 +14,7 @@ import { StaticModule } from './modules/static';
 import { TeamModule } from './modules/team';
 import { PlaceModule } from './modules/place';
 
+export { CONTENT_LANGUAGE_HEADER };
 export type { AvciCMSConfig };
 export * from './modules/shipment';
 export * from './modules/attribute';
@@ -42,7 +43,7 @@ export * from './cache';
 
 export class AvciCMS {
   private readonly client: AvciFetchClient;
-  
+
   public readonly content: ContentModule;
   public readonly workspace: WorkspaceModule;
   public readonly shipment: ShipmentModule;
@@ -60,7 +61,7 @@ export class AvciCMS {
 
   constructor(config: AvciCMSConfig) {
     this.client = createFetchClient(config);
-    
+
     // Initialize modules
     this.content = new ContentModule(this.client);
     this.workspace = new WorkspaceModule(this.client);

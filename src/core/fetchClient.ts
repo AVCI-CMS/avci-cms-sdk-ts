@@ -1,11 +1,15 @@
 import createClient, { Middleware } from 'openapi-fetch';
 import type { paths } from '../schema';
 
+export const CONTENT_LANGUAGE_HEADER = 'x-avci-language' as const;
+
 export interface AvciCMSConfig {
   apiKey: string;
   projectId?: string;
   clientId?: string;
   baseUrl?: string;
+  /** Default content language sent via `x-avci-language` header (e.g. 'tr', 'en', 'tr-TR'). */
+  language?: string;
 }
 
 export function createFetchClient(config: AvciCMSConfig) {
@@ -21,6 +25,9 @@ export function createFetchClient(config: AvciCMSConfig) {
       if (clientIdentifier) {
         request.headers.set('x-avci-client', clientIdentifier);
         request.headers.set('x-project-id', clientIdentifier);
+      }
+      if (config.language && !request.headers.has(CONTENT_LANGUAGE_HEADER)) {
+        request.headers.set(CONTENT_LANGUAGE_HEADER, config.language);
       }
       return request;
     },
