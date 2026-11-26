@@ -1,4 +1,11 @@
-import { createFetchClient, CONTENT_LANGUAGE_HEADER, type AvciCMSConfig, type AvciFetchClient } from './core/fetchClient';
+import {
+  createFetchClient,
+  AVCICMS_CLIENT_HEADER,
+  AVCICMS_API_KEY_HEADER,
+  CONTENT_LANGUAGE_HEADER,
+  type AvciCMSConfig,
+  type AvciFetchClient,
+} from './core/fetchClient';
 import { ContentModule } from './modules/content';
 import { WorkspaceModule } from './modules/workspace';
 import { ShipmentModule } from './modules/shipment';
@@ -15,7 +22,7 @@ import { TeamModule } from './modules/team';
 import { PlaceModule } from './modules/place';
 import { TermsModule } from './modules/terms';
 
-export { CONTENT_LANGUAGE_HEADER };
+export { AVCICMS_CLIENT_HEADER, AVCICMS_API_KEY_HEADER, CONTENT_LANGUAGE_HEADER };
 export type { AvciCMSConfig };
 export * from './modules/shipment';
 export * from './modules/attribute';

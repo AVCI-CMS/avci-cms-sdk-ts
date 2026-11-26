@@ -1,14 +1,23 @@
 import createClient, { Middleware } from 'openapi-fetch';
 import type { paths } from '../schema';
 
-export const CONTENT_LANGUAGE_HEADER = 'x-avci-language' as const;
+export const AVCICMS_CLIENT_HEADER = 'x-avcicms-client' as const;
+export const AVCICMS_API_KEY_HEADER = 'x-avcicms-api-key' as const;
+export const CONTENT_LANGUAGE_HEADER = 'x-avcicms-language' as const;
 
 export interface AvciCMSConfig {
+  /** Public workspace client ID (`x-avcicms-client`). Never use a raw MongoDB ObjectId. */
+  clientId: string;
+  /**
+   * API Key (`x-avcicms-api-key`):
+   * - Browser / Mobile: Publishable Key (`pk_live_...`)
+   * - Server / SSR / Cron: Secret Key (`sk_live_...`)
+   */
   apiKey: string;
-  projectId?: string;
-  clientId?: string;
+  /** Optional authenticated end-user or admin JWT sent via `Authorization: Bearer <token>`. */
+  accessToken?: string;
   baseUrl?: string;
-  /** Default content language sent via `x-avci-language` header (e.g. 'tr', 'en', 'tr-TR'). */
+  /** Default content language sent via `x-avcicms-language` header (e.g. 'tr', 'en', 'tr-TR'). */
   language?: string;
 }
 
@@ -19,12 +28,14 @@ export function createFetchClient(config: AvciCMSConfig) {
 
   const authMiddleware: Middleware = {
     async onRequest({ request }: { request: Request }) {
-      request.headers.set('Authorization', `Bearer ${config.apiKey}`);
-      request.headers.set('x-avci-api-key', config.apiKey);
-      const clientIdentifier = config.clientId || config.projectId;
-      if (clientIdentifier) {
-        request.headers.set('x-avci-client', clientIdentifier);
-        request.headers.set('x-project-id', clientIdentifier);
+      if (config.clientId) {
+        request.headers.set(AVCICMS_CLIENT_HEADER, config.clientId);
+      }
+      if (config.apiKey) {
+        request.headers.set(AVCICMS_API_KEY_HEADER, config.apiKey);
+      }
+      if (config.accessToken && !request.headers.has('Authorization')) {
+        request.headers.set('Authorization', `Bearer ${config.accessToken}`);
       }
       if (config.language && !request.headers.has(CONTENT_LANGUAGE_HEADER)) {
         request.headers.set(CONTENT_LANGUAGE_HEADER, config.language);
@@ -32,10 +43,8 @@ export function createFetchClient(config: AvciCMSConfig) {
       return request;
     },
     async onResponse({ response }: { response: Response }) {
-      // openapi-fetch natively returns { data, error }.
-      // Here we can intercept and log or transform specific HTTP errors if needed.
       return response;
-    }
+    },
   };
 
   client.use(authMiddleware);
