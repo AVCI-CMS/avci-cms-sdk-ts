@@ -13,6 +13,7 @@ import { OrganizationModule } from './modules/organization';
 import { StaticModule } from './modules/static';
 import { TeamModule } from './modules/team';
 import { PlaceModule } from './modules/place';
+import { TermsModule } from './modules/terms';
 
 export { CONTENT_LANGUAGE_HEADER };
 export type { AvciCMSConfig };
@@ -28,6 +29,7 @@ export * from './modules/organization';
 export * from './modules/static';
 export * from './modules/team';
 export * from './modules/place';
+export * from './modules/terms';
 export * from './types/attribute';
 export * from './types/customForm';
 export * from './types/basket';
@@ -39,6 +41,7 @@ export * from './types/organization';
 export * from './types/static';
 export * from './types/team';
 export * from './types/place';
+export * from './types/terms';
 export * from './cache';
 
 export class AvciCMS {
@@ -58,6 +61,7 @@ export class AvciCMS {
   public readonly static: StaticModule;
   public readonly team: TeamModule;
   public readonly place: PlaceModule;
+  public readonly terms: TermsModule;
 
   constructor(config: AvciCMSConfig) {
     this.client = createFetchClient(config);
@@ -77,5 +81,6 @@ export class AvciCMS {
     this.static = new StaticModule(this.client);
     this.team = new TeamModule(this.client);
     this.place = new PlaceModule(this.client);
+    this.terms = new TermsModule(this.client);
   }
 }
