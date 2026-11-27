@@ -1,15 +1,17 @@
 {
   "name": "avcicms",
   "version": "1.0.0",
-  "description": "",
+  "description": "Official TypeScript / JavaScript SDK for AVCI CMS",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
     "generate:types": "npm --prefix ../AVCI-CMS-Backend run export:swagger && openapi-typescript ../AVCI-CMS-Backend/openapi.json -o src/schema.d.ts"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["avci-cms", "cms", "sdk", "typescript", "headless-cms"],
+  "author": "AVCI Ventures",
   "license": "ISC",
   "type": "commonjs",
   "files": [

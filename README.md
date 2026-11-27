@@ -1,40 +1,47 @@
-# AVCI CMS TypeScript SDK
+# AVCI CMS TypeScript / JavaScript SDK (`avcicms`)
 
-The official TypeScript SDK for AVCI CMS. It provides a 100% type-safe, lightweight, and modern interface to interact with your AVCI CMS project.
+Official TypeScript & JavaScript SDK for AVCI CMS REST APIs using the `x-avcicms-*` header standard.
 
-## 🚀 Getting Started
-
-**Important:** Before using the SDK, you must create an account and a project on the [AVCI CMS App](https://app.avcicms.com). Once your project is created, you will be able to generate your `API Key` and `Project ID`.
-
-### Installation
+## Installation
 
 ```bash
 npm install avcicms
 ```
 
-### Usage
+## Quick Start
 
-```typescript
+### Browser / Mobile (Publishable Key)
+
+```ts
 import { AvciCMS } from 'avcicms';
 
 const cms = new AvciCMS({
-  apiKey: 'YOUR_API_KEY',
-  projectId: 'YOUR_PROJECT_ID',
+  clientId: process.env.NEXT_PUBLIC_AVCICMS_CLIENT_ID!,
+  apiKey: process.env.NEXT_PUBLIC_AVCICMS_PUBLIC_KEY!, // pk_live_...
+  language: 'tr',
 });
 
-// Example: Fetch posts
-async function fetchPosts() {
-  const posts = await cms.content.findMany('posts');
-  console.log(posts);
-}
+const { data: posts } = await cms.content.findMany('blog');
+const { data: menus } = await cms.workspace.getMenus();
 ```
 
-## Features
-- 100% Type-Safe (generated via OpenAPI)
-- Built on `openapi-fetch` (Lightweight and fast)
-- Support for Node.js and Browser environments
+### Server / SSR / Cron (Secret Key)
 
-## Resources
-- **Documentation & Guides:** https://doc.avcicms.com
-- **Official Website:** https://avcicms.com
-- **Help Center:** https://avcicms.com/resources/help-center
+```ts
+import { AvciCMS } from 'avcicms';
+
+const cms = new AvciCMS({
+  clientId: process.env.NEXT_PUBLIC_AVCICMS_CLIENT_ID!,
+  secretKey: process.env.AVCICMS_SECRET_KEY!, // sk_live_... (sent via x-avcicms-secret-key)
+});
+
+const { data: settings } = await cms.workspace.getSettings();
+```
+
+## Headers Managed Automatically
+
+- `x-avcicms-client` — Workspace public UUID (`clientId`)
+- `x-avcicms-api-key` — Publishable key (`apiKey`, `pk_live_...`)
+- `x-avcicms-secret-key` — Server-only secret key (`secretKey`, `sk_live_...`)
+- `x-avcicms-language` — Content language override (`language`)
+- `Authorization` — Optional end-user JWT (`accessToken`)
